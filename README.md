@@ -19,3 +19,7 @@ There are currently 2 cheat tables for the PC US version of the game in [CheatEn
 `toy2base` simply contains some addresses for common useful things in the game.
 
 `toy2trainer` contains the forms and addresses for the [trainer](https://www.speedrun.com/toys2/thread/n8y8a) which contains some useful tools for practicing various things within the game.
+
+## Project 64
+
+The [Project64](Project64) folder contains some additional cheats for the US N64 ROM of the game to be added to (or simply replace) the Project64.cht file for the emulator running the game.

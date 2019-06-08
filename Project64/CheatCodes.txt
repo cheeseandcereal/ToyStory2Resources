@@ -1,0 +1,8 @@
+Go to the main menu of the game, and enter these codes by doing the following inputs with the analog stick.
+You will here a sound play confirming once you have entered the code correctly. Note - This does not work on PC
+ 
+Level Select (Unlock all levels)
+UP, UP, UP, UP, DOWN, DOWN, UP, UP, DOWN, DOWN, DOWN
+ 
+Power Ups (Unlock all potato-head powerups)
+DOWN, DOWN, DOWN, DOWN, UP, UP, DOWN, DOWN, UP, UP, UP, UP, UP

@@ -1,0 +1,17 @@
+Level Name              Coins           Batteries       Extra Lives     Green Lasers
+---------------------------------------------------------------------------------------
+Andy's House:           93 Coins        6 Batteries     3 Extra Lives   1 Green Laser
+Andy's Neighborhood:    99 Coins        5 Batteries     1 Extra Life    1 Green Laser
+Bombs Away:             0 Coins         4 Batteries     0 Extra Lives   0 Green Lasers
+Construction Yard:      72 Coins        4 Batteries     2 Extra Lives   1 Green Laser
+Alleys and Gullies:     103 Coins       3 Batteries     3 Extra Lives   1 Green Laser
+Slime Time:             0 Coins         0 Batteries     0 Extra Lives   1 Green Laser
+Al's Toy Barn:          71 Coins        5 Batteries     1 Extra Life    1 Green Laser
+Al's Space Land:        89 Coins        3 Batteries     1 Extra Life    1 Green Laser
+Toy Barn Encounter:     0 Coins         4 Batteries     0 Extra Lives   0 Green Lasers
+Elevator Hop:           63 Coins        0 Batteries     0 Extra Lives   1 Green Laser
+Al's Penthouse:         72 Coins        5 Batteries     1 Extra Life    1 Green Laser
+The Evil Emperor Zurg:  0 Coins         0 Batteries     0 Extra Lives   0 Green Lasers
+Airport Infiltration:   72 Coins        2 Batteries     0 Extra Lives   1 Green Laser
+Tarmac Trouble:         88 Coins        5 Batteries     1 Extra Life    1 Green Laser
+Prospector Showdown:    0 Coins         0 Batteries     0 Extra Lives   0 Green Lasers

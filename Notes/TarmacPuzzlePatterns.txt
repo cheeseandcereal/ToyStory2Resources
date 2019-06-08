@@ -1,0 +1,33 @@
+These are all the possible Tarmac Trouble starting light patterns, and their corresponding solutions.
+The letters indicate which lights start on for that pattern. The numbers indicate which buttons to press in order to solve the puzzle.
+The buttons are numbered 1-4, with 1 being the left-most button, and 4 being the right-most button.
+
+B___
+___R    2 3 4
+ 
+BG__
+_G_R    4 2 3
+ 
+BG_R
+BGY_    1 4 3
+ 
+B_Y_
+BG__    4 2
+ 
+B_Y_
+__YR    4 2
+ 
+_GY_
+B_Y_    3 1 2
+ 
+_G_R
+_GY_    3 1
+ 
+__Y_
+_G__    4 1 2
+ 
+__YR
+_G_R    4 2 1
+ 
+___R
+__Y_    3 4 1
