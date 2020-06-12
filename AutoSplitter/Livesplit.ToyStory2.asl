@@ -32,10 +32,12 @@ state("toy2", "UK")
 
 init
 {
-    if (version == "") {
+	if (game.ProcessName == "Project64") {
+		version = "PJ64";
+	} else {
 		// detect version by using the date modified value of the EXE (the US is 0 because the header starts later)
 		vars.modifiedDate = memory.ReadValue<int>(modules.First().BaseAddress + 0xF8);
-		if (vars.modifiedDate == 0) 
+		if (vars.modifiedDate == 0)
 			version = "US";
 		else if (vars.modifiedDate == 0x388395FF)
 			version = "UK";
@@ -44,7 +46,7 @@ init
 
 update
 {
-    if (version == "") return false;
+	if (version == "") return false;
 }
 
 start
@@ -52,14 +54,14 @@ start
 	//31815 is the starting position in level 1. This will make it so that once buzz moves at the start of level 1, timer starts
 	return (old.buzzXPos == 31815 && current.buzzXPos != old.buzzXPos);
 }
- 
+
 split
 {
 	if(current.fBoss1Health==9 && current.fBoss2Health==9 && current.fBoss3Health<=9) //if final boss is defeated
 		return true;
 	return !(Enumerable.SequenceEqual(old.tokenCount, current.tokenCount));
 }
- 
+
 reset
 {
 	if (version == "PJ64")
