@@ -12,6 +12,6 @@ Toy Barn Encounter:     0 Coins         4 Batteries     0 Extra Lives   0 Green 
 Elevator Hop:           63 Coins        0 Batteries     0 Extra Lives   1 Green Laser
 Al's Penthouse:         72 Coins        5 Batteries     1 Extra Life    1 Green Laser
 The Evil Emperor Zurg:  0 Coins         0 Batteries     0 Extra Lives   0 Green Lasers
-Airport Infiltration:   72 Coins        2 Batteries     0 Extra Lives   1 Green Laser
+Airport Infiltration:   72 Coins        3 Batteries     0 Extra Lives   1 Green Laser
 Tarmac Trouble:         88 Coins        5 Batteries     1 Extra Life    1 Green Laser
 Prospector Showdown:    0 Coins         0 Batteries     0 Extra Lives   0 Green Lasers
