@@ -6,6 +6,7 @@ state("Project64", "PJ64")
 	byte fBoss3Health : "Project64.exe", 0x107AD8, 0x2128;
 	short buzzXPos : "Project64.exe", 0x107AD8, 0xBB078;
 	byte16 tokenCount : "Project64.exe", 0x107AD8, 0x1E2DD0;
+	int inLevel : "Project64.exe", 0x107AD8, 0xB0B58;
 }
 
 state("toy2", "US")
@@ -17,6 +18,7 @@ state("toy2", "US")
 	byte fBoss3Health : "toy2.exe", 0x130030;
 	short buzzXPos : "toy2.exe", 0x12F308;
 	byte16 tokenCount : "toy2.exe", 0x12F0D8;
+	int inLevel : "toy2.exe", 0x13EEEC;
 }
 
 state("toy2", "UK")
@@ -28,11 +30,13 @@ state("toy2", "UK")
 	byte fBoss3Health : "toy2.exe", 0x1311B0;
 	short buzzXPos : "toy2.exe", 0x130488;
 	byte16 tokenCount : "toy2.exe", 0x130258;
+	int inLevel : "toy2.exe", 0x14006C;
 }
 
 startup
 {
 	settings.Add("final_boss_split", true, "Split when defeating the final boss");
+	settings.Add("level_split", true, "Split by levels instead of tokens");
 }
 
 init
@@ -146,7 +150,11 @@ split
 			}
 		}
 	}
-	return !(Enumerable.SequenceEqual(old.tokenCount, current.tokenCount));
+	if (settings["level_split"]) {
+		return (old.inLevel != current.inLevel) && (current.inLevel == 0);
+	} else {
+		return !(Enumerable.SequenceEqual(old.tokenCount, current.tokenCount));
+	}
 }
 
 reset
