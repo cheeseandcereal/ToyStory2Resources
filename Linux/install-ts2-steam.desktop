@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Install Toy Story 2
+Comment=Drop a Toy Story 2 PC ISO here to download and run the latest installer
+Icon=system-software-install
+Exec=bash -o pipefail -c "if [[ \\$# -eq 1 ]]; then curl --fail --location --show-error https://github.com/cheeseandcereal/ToyStory2Resources/releases/latest/download/install-ts2-steam.sh | bash -s -- \\"\\$1\\"; status=\\$?; else echo 'Drag one Toy Story 2 PC ISO onto this launcher to install.'; status=1; fi; read -r -p 'Press Enter to close...'; exit \\"\\$status\\"" install-ts2-steam %f
+Terminal=true
+StartupNotify=false

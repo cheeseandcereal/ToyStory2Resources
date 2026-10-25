@@ -248,8 +248,6 @@ main() {
     mapfile -d '' -t d7vk_dlls < <(find "$stage/d7vk" -type f -path '*/x32/ddraw.dll' -print0)
     [[ ${#d7vk_dlls[@]} == 1 && -s ${d7vk_dlls[0]} ]] ||
         die 'Unsupported D7VK archive: expected exactly one nonempty */x32/ddraw.dll.'
-    LC_ALL=C grep -aFq 'ResolutionWidth' "$stage/fix/scripts/ToyStory2Fix.asi" ||
-        die 'Unsupported fix archive: ToyStory2Fix.asi lacks display options. Use -f/--fix with a supporting build.'
     game_exe=$(find "$stage/iso" -maxdepth 4 -type f -ipath '*/setup/toy2/hd/toy2.exe' -print -quit)
     [[ -n $game_exe ]] || die 'Expected Setup/Toy2/HD/toy2.exe in the ISO.'
     cd_dir=$(find "$stage/iso" -maxdepth 3 -type d -ipath '*/setup/toy2/cd' -print -quit)
@@ -279,6 +277,7 @@ main() {
     register "$destination"
 }
 
-if [[ ${BASH_SOURCE[0]} == "$0" ]]; then
+# BASH_SOURCE is unset when the script is piped into bash.
+if [[ ${BASH_SOURCE[0]:-$0} == "$0" ]]; then
     main "$@"
 fi
