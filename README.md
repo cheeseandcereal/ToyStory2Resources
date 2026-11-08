@@ -34,7 +34,7 @@ Requirements:
 Copy/paste this into a terminal to download and run in one command:
 
 ```bash
-curl --fail --location --show-error https://github.com/cheeseandcereal/ToyStory2Resources/releases/latest/download/install-ts2-steam.sh | bash -s -- path/to/ts2.iso
+curl --fail --location --show-error https://github.com/cheeseandcereal/ToyStory2Resources/releases/latest/download/install-ts2-steam.sh | bash -s -- path/to/ToyStory2.iso
 ```
 
 Alternatively, download the [latest install script](https://github.com/cheeseandcereal/ToyStory2Resources/releases/latest/download/install-ts2-steam.sh)
@@ -42,7 +42,7 @@ Alternatively, download the [latest install script](https://github.com/cheeseand
 Then, from the directory containing the script, run:
 
 ```bash
-bash install-ts2-steam.sh path/to/ts2.iso
+bash install-ts2-steam.sh path/to/ToyStory2.iso
 ```
 
 ### Installation options

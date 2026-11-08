@@ -4,7 +4,7 @@ umask 077
 
 stage=
 FIX_DEFAULT_URL=https://github.com/cheeseandcereal/ToyStory2Fix/releases/latest/download/ToyStory2Fix.zip
-D7VK_DEFAULT_URL=https://github.com/WinterSnowfall/d7vk/releases/download/v2.3/d7vk-v2.3.zip
+D7VK_DEFAULT_URL=https://github.com/WinterSnowfall/d7vk/releases/download/v2.4/d7vk-v2.4.zip
 
 die() { printf 'Error: %s\n' "$*" >&2; exit 1; }
 
@@ -260,7 +260,7 @@ main() {
     fi
     cp -- "$stage/fix"/dsound.{dll,ini} "$stage/game/"
     mv -T -- "${d7vk_dlls[0]}" "$stage/game/ddraw.dll"
-    printf 'd3d9.maxFrameRate = 60\n' > "$stage/game/dxvk.conf"
+    printf 'd3d9.maxFrameRate = 60\nddraw.legacySurfaceDimensions = False\n' > "$stage/game/dxvk.conf"
     mkdir -p -- "$stage/game/scripts"
     cp -- "$stage/fix"/scripts/ToyStory2Fix.{asi,ini} "$stage/game/scripts/"
     configure_loader
