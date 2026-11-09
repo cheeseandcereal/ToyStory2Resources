@@ -1,0 +1,86 @@
+name: 'Toy Story 2: Buzz Lightyear to the Rescue!'
+game_slug: toy-story-2-buzz-lightyear-to-the-rescue
+installer_slug: toy-story-2-buzz-lightyear-to-cd
+slug: toy-story-2-buzz-lightyear-to-cd
+version: CD
+runner: wine
+year: 1999
+description: Includes ToyStory2Fix and D7VK
+notes: |
+  Fullscreen [default] or windowed mode can be configured with custom --fullscreen and --windowed arguments. Custom resolutions can be picked for either mode, with -w and -h flags, i.e. --windowed -w 1024 -h 768
+
+  ToyStory2Fix options can be adjusted in the ini at C:\ToyStory2\scripts\ToyStory2Fix.ini in the wine prefix
+
+script:
+  files:
+  - fix: https://github.com/cheeseandcereal/ToyStory2Fix/releases/latest/download/ToyStory2Fix.zip
+  - d7vk: https://github.com/WinterSnowfall/d7vk/releases/download/v2.4/d7vk-v2.4.zip
+
+  game:
+    arch: win64
+    exe: $GAMEDIR/drive_c/ToyStory2/toy2.exe
+    prefix: $GAMEDIR
+    working_dir: $GAMEDIR/drive_c/ToyStory2
+
+  installer:
+  - insert-disc:
+      message: Mount the Toy Story 2 PC disc or ISO, then use Browse to select its root folder.
+      requires: Setup/Toy2/HD/toy2.exe
+  - task:
+      name: wineexec
+      description: Preparing Wine and copying game files...
+      executable: xcopy.exe
+      working_dir: $DISC
+      args: '"Setup\Toy2\HD" "C:\ToyStory2" /E /I /H /Y'
+  - task:
+      name: wineexec
+      description: Copying music and videos...
+      executable: xcopy.exe
+      working_dir: $DISC
+      args: '"Setup\Toy2\CD" "C:\ToyStory2\CD" /E /I /H /Y'
+  - extract:
+      file: fix
+      dst: $GAMEDIR/drive_c/ToyStory2
+  - extract:
+      file: d7vk
+      dst: $CACHE/d7vk
+  - copy:
+      src: $CACHE/d7vk/x32/ddraw.dll
+      dst: $GAMEDIR/drive_c/ToyStory2
+  - write_file:
+      file: $GAMEDIR/drive_c/ToyStory2/dxvk.conf
+      content: |
+        d3d9.maxFrameRate = 60
+        ddraw.legacySurfaceDimensions = False
+  - task:
+      name: set_regedit
+      description: Configuring the game registry...
+      path: HKEY_LOCAL_MACHINE\Software\Wow6432Node\TravellersTalesToyStory2
+      key: path
+      value: 'C:\\ToyStory2\\data\\'
+  - task:
+      name: set_regedit
+      path: HKEY_LOCAL_MACHINE\Software\Wow6432Node\TravellersTalesToyStory2
+      key: cdpath
+      value: 'C:\\ToyStory2\\CD\\'
+  - task:
+      name: set_regedit
+      path: HKEY_CURRENT_USER\Software\Wine\AppDefaults\toy2.exe\X11 Driver
+      key: Managed
+      value: 'Y'
+  - task:
+      name: winetricks
+      description: Installing Microsoft AMStream and Quartz for video playback...
+      app: amstream quartz
+
+  wine:
+    dxvk: false
+    dxvk_nvapi: false
+    vkd3d: false
+    d3d_extras: false
+    dgvoodoo2: false
+    overrides:
+      ddraw: n,b
+      dsound: n,b
+      quartz: n,b
+      winegstreamer: disabled

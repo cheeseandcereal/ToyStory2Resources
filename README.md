@@ -59,6 +59,14 @@ Options:
 
 Supplying local ZIPs for both `--fix` and `--d7vk` avoids downloads. Steam manages Proton and the game's Wine prefix.
 
+## Linux Lutris Installer
+
+As an alternative to installing/running on linux through steam, there is also an included [Lutris](https://lutris.net) install script at [toy-story-2-lutris.yaml](Linux/toy-story-2-lutris.yaml)
+
+This installer uses winetricks to configure video playback support, and thus supports working cutscenes with more versions of wine/proton than the steam installer (which relies on the builtin wine/proton flavor amstream mpeg-1 support).
+
+(Note that as of 2026/11/09, this is also the default CD version installer [on the lutris game page](https://lutris.net/games/toy-story-2-buzz-lightyear-to-the-rescue/) and is viewable [on lutris here](https://lutris.net/games/install/32914/view))
+
 ## Cheat Engine
 
 There are currently 2 cheat tables for the PC US version of the game in [CheatEngine](CheatEngine).
