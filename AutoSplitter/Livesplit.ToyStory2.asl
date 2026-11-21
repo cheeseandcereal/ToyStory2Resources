@@ -19,6 +19,7 @@ state("toy2", "US")
 	short buzzXPos : "toy2.exe", 0x12F308;
 	byte16 tokenCount : "toy2.exe", 0x12F0D8;
 	int inLevel : "toy2.exe", 0x13EEEC;
+	int menuPage : "toy2.exe", 0x12ADB0;
 }
 
 state("toy2", "UK")
@@ -31,12 +32,14 @@ state("toy2", "UK")
 	short buzzXPos : "toy2.exe", 0x130488;
 	byte16 tokenCount : "toy2.exe", 0x130258;
 	int inLevel : "toy2.exe", 0x14006C;
+	int menuPage : "toy2.exe", 0x12BF30;
 }
 
 startup
 {
 	settings.Add("final_boss_split", true, "Split when defeating the final boss");
 	settings.Add("level_split", true, "Split by levels instead of tokens");
+	settings.Add("menu_reset", true, "Reset when exiting through secret menu");
 }
 
 init
@@ -159,10 +162,13 @@ split
 
 reset
 {
-	if (version == "PJ64")
+	if (version == "PJ64") {
 		return current.level1LoadScreen == 0;
-	else
+	} else if (settings["menu_reset"]) {
+		return (old.menuPage == 4 && current.menuPage == 3);
+	} else {
 		return (current.levelID == 1 && current.isLoadScreen == 1);
+	}
 }
 
 isLoading
