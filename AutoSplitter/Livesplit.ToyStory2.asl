@@ -39,7 +39,6 @@ startup
 {
 	settings.Add("final_boss_split", true, "Split when defeating the final boss");
 	settings.Add("level_split", true, "Split by levels instead of tokens");
-	settings.Add("menu_reset", true, "Reset when exiting through secret menu");
 }
 
 init
@@ -164,10 +163,8 @@ reset
 {
 	if (version == "PJ64") {
 		return current.level1LoadScreen == 0;
-	} else if (settings["menu_reset"]) {
-		return (old.menuPage == 4 && current.menuPage == 3);
 	} else {
-		return (current.levelID == 1 && current.isLoadScreen == 1);
+		return (old.menuPage == 4 && current.menuPage == 3) || (current.levelID == 1 && current.isLoadScreen == 1);
 	}
 }
 
