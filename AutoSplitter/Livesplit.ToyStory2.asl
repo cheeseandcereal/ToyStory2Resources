@@ -1,12 +1,15 @@
 state("Project64", "PJ64")
 {
 	int level1LoadScreen : "Project64.exe", 0x107AD8, 0x3480;
+	int levelID : "Project64.exe", 0x107AD8, 0x1E8CDC;
 	byte fBoss1Health : "Project64.exe", 0x107AD8, 0x2120;
 	byte fBoss2Health : "Project64.exe", 0x107AD8, 0x2124;
 	byte fBoss3Health : "Project64.exe", 0x107AD8, 0x2128;
 	short buzzXPos : "Project64.exe", 0x107AD8, 0xBB078;
 	byte16 tokenCount : "Project64.exe", 0x107AD8, 0x1E2DD0;
 	int inLevel : "Project64.exe", 0x107AD8, 0xB0B58;
+	short levelStart : "Project64.exe", 0x107AD8, 0x1E72BA;
+	short levelTransition : "Project64.exe", 0x107AD8, 0x1CF0B2;
 }
 
 state("toy2", "US")
@@ -20,6 +23,10 @@ state("toy2", "US")
 	byte16 tokenCount : "toy2.exe", 0x12F0D8;
 	int inLevel : "toy2.exe", 0x13EEEC;
 	int menuPage : "toy2.exe", 0x12ADB0;
+	short levelStart : "toy2.exe", 0x12F2DC;
+	short levelTransition : "toy2.exe", 0x12B7DC;
+	short demoMode : "toy2.exe", 0x12AD94;
+	
 }
 
 state("toy2", "UK")
@@ -33,12 +40,16 @@ state("toy2", "UK")
 	byte16 tokenCount : "toy2.exe", 0x130258;
 	int inLevel : "toy2.exe", 0x14006C;
 	int menuPage : "toy2.exe", 0x12BF30;
+	short levelStart : "toy2.exe", 0x13045C;
+	short levelTransition : "toy2.exe", 0x12C95C;
+	short demoMode : "toy2.exe", 0x12BF14;
 }
 
 startup
 {
-	settings.Add("final_boss_split", true, "Split when defeating the final boss");
+	settings.Add("start_all_levels", false, "Start timer for all levels");
 	settings.Add("level_split", true, "Split by levels instead of tokens");
+	settings.Add("final_boss_split", true, "Split when defeating the final boss");
 }
 
 init
@@ -133,8 +144,20 @@ update
 
 start
 {
-	//31815 is the starting position in level 1. This will make it so that once buzz moves at the start of level 1, timer starts
-	return (old.buzzXPos == 31815 && current.buzzXPos != old.buzzXPos);
+	// levelStart is a countdown during level/menu transitions that control of Buzz depends on
+	if (
+		old.levelStart >= 60 &&
+		current.levelStart < 60 &&
+		current.levelTransition == 0 && // Ensures transition into level and not out of it
+		current.inLevel == 1 &&
+		(settings["start_all_levels"] || current.levelID == 1)
+	) {
+		if (version == "PJ64") {
+			return true;
+		} else {
+			return current.demoMode == 0;
+		}
+	}
 }
 
 split
