@@ -10,6 +10,7 @@ state("Project64", "PJ64")
 	int inLevel : "Project64.exe", 0x107AD8, 0xB0B58;
 	short levelStart : "Project64.exe", 0x107AD8, 0x1E72BA;
 	short levelTransition : "Project64.exe", 0x107AD8, 0x1CF0B2;
+	short invincible : "Project64.exe", 0x107AD8, 0xBB106;
 }
 
 state("toy2", "US")
@@ -22,9 +23,10 @@ state("toy2", "US")
 	short buzzXPos : "toy2.exe", 0x12F308;
 	byte16 tokenCount : "toy2.exe", 0x12F0D8;
 	int inLevel : "toy2.exe", 0x13EEEC;
-	int menuPage : "toy2.exe", 0x12ADB0;
+	int saveLoaded : "toy2.exe", 0x430D58;
 	short levelStart : "toy2.exe", 0x12F2DC;
 	short levelTransition : "toy2.exe", 0x12B7DC;
+	short invincible : "toy2.exe", 0x12F394;
 	short demoMode : "toy2.exe", 0x12AD94;
 	
 }
@@ -39,9 +41,10 @@ state("toy2", "UK")
 	short buzzXPos : "toy2.exe", 0x130488;
 	byte16 tokenCount : "toy2.exe", 0x130258;
 	int inLevel : "toy2.exe", 0x14006C;
-	int menuPage : "toy2.exe", 0x12BF30;
+	int saveLoaded : "toy2.exe", 0x431F58;
 	short levelStart : "toy2.exe", 0x13045C;
 	short levelTransition : "toy2.exe", 0x12C95C;
+	short invincible : "toy2.exe", 0x130514;
 	short demoMode : "toy2.exe", 0x12BF14;
 }
 
@@ -146,10 +149,11 @@ start
 {
 	// levelStart is a countdown during level/menu transitions that control of Buzz depends on
 	if (
-		old.levelStart >= 60 &&
-		current.levelStart < 60 &&
-		current.levelTransition == 0 && // Ensures transition into level and not out of it
+		old.levelStart <= 60 &&
+		current.levelStart < old.levelStart &&
+		current.levelTransition == 0 && // Disregards level exit transition
 		current.inLevel == 1 &&
+		current.invincible == 0 && // Disregards respawn transition
 		(settings["start_all_levels"] || current.levelID == 1)
 	) {
 		if (version == "PJ64") {
@@ -187,7 +191,7 @@ reset
 	if (version == "PJ64") {
 		return current.level1LoadScreen == 0;
 	} else {
-		return (old.menuPage == 4 && current.menuPage == 3) || (current.levelID == 1 && current.isLoadScreen == 1);
+		return (old.saveLoaded == 1 && current.saveLoaded == 0) || (current.levelID == 1 && current.isLoadScreen == 1);
 	}
 }
 
