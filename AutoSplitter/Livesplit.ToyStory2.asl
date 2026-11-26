@@ -11,6 +11,7 @@ state("Project64", "PJ64")
 	short levelStart : "Project64.exe", 0x107AD8, 0x1E72BA;
 	short levelTransition : "Project64.exe", 0x107AD8, 0x1CF0B2;
 	short invincible : "Project64.exe", 0x107AD8, 0xBB106;
+	short demoMode : "Project64.exe", 0x107AD8, 0x1C8A7C;
 }
 
 state("toy2", "US")
@@ -147,21 +148,15 @@ update
 
 start
 {
-	// levelStart is a countdown during level/menu transitions that control of Buzz depends on
-	if (
-		old.levelStart <= 60 &&
+	return (
+		old.levelStart <= 60 && // levelStart is a countdown during level/menu transitions that control of Buzz depends on
 		current.levelStart < old.levelStart &&
 		current.levelTransition == 0 && // Disregards level exit transition
 		current.inLevel == 1 &&
 		current.invincible == 0 && // Disregards respawn transition
+		current.demoMode == 0 &&
 		(settings["start_all_levels"] || current.levelID == 1)
-	) {
-		if (version == "PJ64") {
-			return true;
-		} else {
-			return current.demoMode == 0;
-		}
-	}
+	);
 }
 
 split
