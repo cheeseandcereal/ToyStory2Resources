@@ -50,7 +50,7 @@ script:
   - write_file:
       file: $GAMEDIR/drive_c/ToyStory2/dxvk.conf
       content: |
-        d3d9.maxFrameRate = 60
+        d3d9.maxFrameRate = 0
         ddraw.legacySurfaceDimensions = False
   - task:
       name: set_regedit

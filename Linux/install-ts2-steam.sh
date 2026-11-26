@@ -260,7 +260,7 @@ main() {
     fi
     cp -- "$stage/fix"/dsound.{dll,ini} "$stage/game/"
     mv -T -- "${d7vk_dlls[0]}" "$stage/game/ddraw.dll"
-    printf 'd3d9.maxFrameRate = 60\nddraw.legacySurfaceDimensions = False\n' > "$stage/game/dxvk.conf"
+    printf 'd3d9.maxFrameRate = 0\nddraw.legacySurfaceDimensions = False\n' > "$stage/game/dxvk.conf"
     mkdir -p -- "$stage/game/scripts"
     cp -- "$stage/fix"/scripts/ToyStory2Fix.{asi,ini} "$stage/game/scripts/"
     configure_loader
