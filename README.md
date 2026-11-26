@@ -12,6 +12,12 @@ The autosplitter currently works on PC US and PC UK versions as well as Project6
 
 I know that PJ64 is oddly specific (and old), but that's the version of project64 that best emulates Toy Story 2, and is the version used to speedrun the game.
 
+## Windows: Alt+Tab and the Windows key
+
+Windows has a compatibility rule for `toy2.exe` that can block Alt+Tab and the Windows key during play. To use both shortcuts, close the game, download and run [Enable toy2 Alt-Tab Win.cmd](Windows/Enable%20toy2%20Alt-Tab%20Win.cmd). The script sets a system-wide `AppCompatFlags` registry value that disables the rule the next time you launch the game.
+
+To restore the default behavior, close the game and run [Disable toy2 Alt-Tab Win.cmd](Windows/Disable%20toy2%20Alt-Tab%20Win.cmd). It removes the registry value.
+
 ## Linux Steam Installer
 
 The [linux install script](Linux/install-ts2-steam.sh) installs the PC game from an iso and adds it to Steam as a non-Steam library entry. It downloads and configures/uses [ToyStory2Fix](https://github.com/cheeseandcereal/ToyStory2Fix/releases/latest) and [D7VK](https://github.com/WinterSnowfall/d7vk) by default.
