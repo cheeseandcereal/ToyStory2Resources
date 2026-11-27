@@ -136,14 +136,12 @@ init
 update
 {
 	if (version == "") return false;
-	if (version != "PJ64") {
-		// Only start checking for final boss health if it is the final level, the first boss is at max health, and buzz is in the starting position
-		// This makes it so we will only start checking for final boss health when entering the final level
-		if (current.levelID == 15 && current.fBoss1Health == 29 && current.buzzXPos == -5416) vars.checkBossHealth = true;
-		if (current.levelID != 15) vars.checkBossHealth = false; // Make sure we aren't checking for final boss health if it isn't the final level
+	// Only start checking for final boss health if it is the final level, the first boss is at max health, and Buzz is in the starting position
+	// This makes it so we will only start checking for final boss health when entering the final level
+	if (current.levelID == 15 && current.fBoss1Health == 29 && current.buzzXPos == -5416) vars.checkBossHealth = true;
+	if (current.levelID != 15) vars.checkBossHealth = false; // Make sure we aren't checking for final boss health if it isn't the final level
 
-		vars.isLoading.Update(game);
-	}
+	vars.isLoading.Update(game);
 }
 
 start
@@ -163,15 +161,9 @@ split
 {
 	if (settings["final_boss_split"]) {
 		// If enabled, split when final boss is defeated
-		if (version == "PJ64") {
-			// With PJ64, levelID is not supported, so it will continually split after boss is defeated
-			if (current.fBoss1Health==9 && current.fBoss2Health==9 && current.fBoss3Health<=9) return true;
-		} else {
-			// With PC version, we will only split once, after the boss is defeated
-			if (vars.checkBossHealth && current.fBoss1Health==9 && current.fBoss2Health==9 && current.fBoss3Health<=9) {
-				vars.checkBossHealth = false;
-				return true;
-			}
+		if (vars.checkBossHealth && current.fBoss1Health==9 && current.fBoss2Health==9 && current.fBoss3Health<=9) {
+			vars.checkBossHealth = false;
+			return true;
 		}
 	}
 	if (settings["level_split"]) {
