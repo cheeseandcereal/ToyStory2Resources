@@ -1,12 +1,15 @@
 state("Project64", "PJ64")
 {
 	int level1LoadScreen : "Project64.exe", 0x107AD8, 0x3480;
+	int levelID : "Project64.exe", 0x107AD8, 0x1E8CDC;
 	byte fBoss1Health : "Project64.exe", 0x107AD8, 0x2120;
 	byte fBoss2Health : "Project64.exe", 0x107AD8, 0x2124;
 	byte fBoss3Health : "Project64.exe", 0x107AD8, 0x2128;
 	short buzzXPos : "Project64.exe", 0x107AD8, 0xBB078;
 	byte16 tokenCount : "Project64.exe", 0x107AD8, 0x1E2DD0;
 	int inLevel : "Project64.exe", 0x107AD8, 0xB0B58;
+	short levelTransitionTimer : "Project64.exe", 0x107AD8, 0x1E72BA;
+	short demoMode : "Project64.exe", 0x107AD8, 0x1C8A7C;
 }
 
 state("toy2", "US")
@@ -19,6 +22,9 @@ state("toy2", "US")
 	short buzzXPos : "toy2.exe", 0x12F308;
 	byte16 tokenCount : "toy2.exe", 0x12F0D8;
 	int inLevel : "toy2.exe", 0x13EEEC;
+	int saveLoaded : "toy2.exe", 0x430D58;
+	short levelTransitionTimer : "toy2.exe", 0x12F2DC;
+	short demoMode : "toy2.exe", 0x12AD94;
 }
 
 state("toy2", "UK")
@@ -31,12 +37,16 @@ state("toy2", "UK")
 	short buzzXPos : "toy2.exe", 0x130488;
 	byte16 tokenCount : "toy2.exe", 0x130258;
 	int inLevel : "toy2.exe", 0x14006C;
+	int saveLoaded : "toy2.exe", 0x431F58;
+	short levelTransitionTimer : "toy2.exe", 0x13045C;
+	short demoMode : "toy2.exe", 0x12BF14;
 }
 
 startup
 {
-	settings.Add("final_boss_split", true, "Split when defeating the final boss");
+	settings.Add("start_all_levels", false, "Start timer for all levels");
 	settings.Add("level_split", true, "Split by levels instead of tokens");
+	settings.Add("final_boss_split", true, "Split when defeating the final boss");
 }
 
 init
@@ -113,41 +123,45 @@ init
 		vars.isLoading.Enabled = (isLoadingAddr != IntPtr.Zero);
 	}
 
+	vars.startArmed = false;
 	vars.checkBossHealth = false;
 }
 
 update
 {
 	if (version == "") return false;
-	if (version != "PJ64") {
-		// Only start checking for final boss health if it is the final level, the first boss is at max health, and buzz is in the starting position
-		// This makes it so we will only start checking for final boss health when entering the final level
-		if (current.levelID == 15 && current.fBoss1Health == 29 && current.buzzXPos == -5416) vars.checkBossHealth = true;
-		if (current.levelID != 15) vars.checkBossHealth = false; // Make sure we aren't checking for final boss health if it isn't the final level
+	// Only start checking for final boss health if it is the final level, the first boss is at max health, and Buzz is in the starting position
+	// This makes it so we will only start checking for final boss health when entering the final level
+	if (current.levelID == 15 && current.fBoss1Health == 29 && current.buzzXPos == -5416) vars.checkBossHealth = true;
+	if (current.levelID != 15) vars.checkBossHealth = false; // Make sure we aren't checking for final boss health if it isn't the final level
 
+	if (version != "PJ64") {
 		vars.isLoading.Update(game);
 	}
 }
 
 start
 {
-	//31815 is the starting position in level 1. This will make it so that once buzz moves at the start of level 1, timer starts
-	return (old.buzzXPos == 31815 && current.buzzXPos != old.buzzXPos);
+    if (old.inLevel != current.inLevel)
+        vars.startArmed = current.inLevel == 1 && current.demoMode == 0;
+
+    if (vars.startArmed &&
+        old.levelTransitionTimer <= 60 && current.levelTransitionTimer < old.levelTransitionTimer &&
+        current.levelTransitionTimer > 0) {
+        vars.startArmed = false;
+        return settings["start_all_levels"] || current.levelID == 1;
+    }
+
+    return false;
 }
 
 split
 {
 	if (settings["final_boss_split"]) {
 		// If enabled, split when final boss is defeated
-		if (version == "PJ64") {
-			// With PJ64, levelID is not supported, so it will continually split after boss is defeated
-			if (current.fBoss1Health==9 && current.fBoss2Health==9 && current.fBoss3Health<=9) return true;
-		} else {
-			// With PC version, we will only split once, after the boss is defeated
-			if (vars.checkBossHealth && current.fBoss1Health==9 && current.fBoss2Health==9 && current.fBoss3Health<=9) {
-				vars.checkBossHealth = false;
-				return true;
-			}
+		if (vars.checkBossHealth && current.fBoss1Health==9 && current.fBoss2Health==9 && current.fBoss3Health<=9) {
+			vars.checkBossHealth = false;
+			return true;
 		}
 	}
 	if (settings["level_split"]) {
@@ -159,10 +173,11 @@ split
 
 reset
 {
-	if (version == "PJ64")
+	if (version == "PJ64") {
 		return current.level1LoadScreen == 0;
-	else
-		return (current.levelID == 1 && current.isLoadScreen == 1);
+	} else {
+		return (old.saveLoaded == 1 && current.saveLoaded == 0) || (current.levelID == 1 && current.isLoadScreen == 1);
+	}
 }
 
 isLoading
