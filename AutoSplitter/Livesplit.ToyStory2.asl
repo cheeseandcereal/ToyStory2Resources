@@ -8,9 +8,7 @@ state("Project64", "PJ64")
 	short buzzXPos : "Project64.exe", 0x107AD8, 0xBB078;
 	byte16 tokenCount : "Project64.exe", 0x107AD8, 0x1E2DD0;
 	int inLevel : "Project64.exe", 0x107AD8, 0xB0B58;
-	short levelTransition : "Project64.exe", 0x107AD8, 0x1CF0B2;
 	short levelTransitionTimer : "Project64.exe", 0x107AD8, 0x1E72BA;
-	short invincible : "Project64.exe", 0x107AD8, 0xBB106;
 	short demoMode : "Project64.exe", 0x107AD8, 0x1C8A7C;
 }
 
@@ -25,9 +23,7 @@ state("toy2", "US")
 	byte16 tokenCount : "toy2.exe", 0x12F0D8;
 	int inLevel : "toy2.exe", 0x13EEEC;
 	int saveLoaded : "toy2.exe", 0x430D58;
-	short levelStart : "toy2.exe", 0x12F2DC;
-	short levelTransition : "toy2.exe", 0x12B7DC;
-	short invincible : "toy2.exe", 0x12F394;
+	short levelTransitionTimer : "toy2.exe", 0x12F2DC;
 	short demoMode : "toy2.exe", 0x12AD94;
 }
 
@@ -42,9 +38,7 @@ state("toy2", "UK")
 	byte16 tokenCount : "toy2.exe", 0x130258;
 	int inLevel : "toy2.exe", 0x14006C;
 	int saveLoaded : "toy2.exe", 0x431F58;
-	short levelStart : "toy2.exe", 0x13045C;
-	short levelTransition : "toy2.exe", 0x12C95C;
-	short invincible : "toy2.exe", 0x130514;
+	short levelTransitionTimer : "toy2.exe", 0x13045C;
 	short demoMode : "toy2.exe", 0x12BF14;
 }
 
