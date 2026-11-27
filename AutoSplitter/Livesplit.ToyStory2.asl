@@ -8,8 +8,8 @@ state("Project64", "PJ64")
 	short buzzXPos : "Project64.exe", 0x107AD8, 0xBB078;
 	byte16 tokenCount : "Project64.exe", 0x107AD8, 0x1E2DD0;
 	int inLevel : "Project64.exe", 0x107AD8, 0xB0B58;
-	short levelStart : "Project64.exe", 0x107AD8, 0x1E72BA;
 	short levelTransition : "Project64.exe", 0x107AD8, 0x1CF0B2;
+	short levelTransitionTimer : "Project64.exe", 0x107AD8, 0x1E72BA;
 	short invincible : "Project64.exe", 0x107AD8, 0xBB106;
 	short demoMode : "Project64.exe", 0x107AD8, 0x1C8A7C;
 }
@@ -29,7 +29,6 @@ state("toy2", "US")
 	short levelTransition : "toy2.exe", 0x12B7DC;
 	short invincible : "toy2.exe", 0x12F394;
 	short demoMode : "toy2.exe", 0x12AD94;
-	
 }
 
 state("toy2", "UK")
@@ -130,6 +129,7 @@ init
 		vars.isLoading.Enabled = (isLoadingAddr != IntPtr.Zero);
 	}
 
+	vars.startArmed = false;
 	vars.checkBossHealth = false;
 }
 
@@ -141,20 +141,24 @@ update
 	if (current.levelID == 15 && current.fBoss1Health == 29 && current.buzzXPos == -5416) vars.checkBossHealth = true;
 	if (current.levelID != 15) vars.checkBossHealth = false; // Make sure we aren't checking for final boss health if it isn't the final level
 
-	vars.isLoading.Update(game);
+	if (version != "PJ64") {
+		vars.isLoading.Update(game);
+	}
 }
 
 start
 {
-	return (
-		old.levelStart <= 60 && // levelStart is a countdown during level/menu transitions that control of Buzz depends on
-		current.levelStart < old.levelStart &&
-		current.levelTransition == 0 && // Disregards level exit transition
-		current.inLevel == 1 &&
-		current.invincible == 0 && // Disregards respawn transition
-		current.demoMode == 0 &&
-		(settings["start_all_levels"] || current.levelID == 1)
-	);
+    if (old.inLevel != current.inLevel)
+        vars.startArmed = current.inLevel == 1 && current.demoMode == 0;
+
+    if (vars.startArmed && current.levelTransition == 0 &&
+        old.levelTransitionTimer <= 60 && current.levelTransitionTimer < old.levelTransitionTimer &&
+        current.levelTransitionTimer > 0) {
+        vars.startArmed = false;
+        return settings["start_all_levels"] || current.levelID == 1;
+    }
+
+    return false;
 }
 
 split
