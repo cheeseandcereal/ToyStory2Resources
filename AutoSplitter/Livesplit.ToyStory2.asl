@@ -145,7 +145,7 @@ start
     if (old.inLevel != current.inLevel)
         vars.startArmed = current.inLevel == 1 && current.demoMode == 0;
 
-    if (vars.startArmed && current.levelTransition == 0 &&
+    if (vars.startArmed &&
         old.levelTransitionTimer <= 60 && current.levelTransitionTimer < old.levelTransitionTimer &&
         current.levelTransitionTimer > 0) {
         vars.startArmed = false;
